@@ -1,0 +1,35 @@
+[project]
+name = "data-complexity"
+description = "Data Complexity Measures"
+authors = [
+    {name = "Son Nguyen", email = "ngocson2vn@gmail.com"},
+]
+dependencies = [
+    "numpy>=1.25.2",
+    "gower>=0.1.2",
+]
+requires-python = ">=3.9, <3.13"
+readme = "README.md"
+license = {text = "MIT"}
+dynamic = ["version"]
+
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+[tool.pdm.build]
+includes = ["dcm/"]
+
+[tool.pdm.version]
+source = "file"
+path = "dcm/__init__.py"
+
+[tool.pdm.dev-dependencies]
+examples = [
+    "pandas>=2.1.1",
+    "requests>=2.31.0",
+    "tqdm>=4.66.1",
+]
+tests = [
+    "nose2>=0.13.0",
+]

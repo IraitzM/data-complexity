@@ -1,4 +1,4 @@
-VERSION = "0.1.3"
+__version__ = "0.1.3"
 
 import os
 __DEBUG__ = os.environ.get("DCM_DEBUG", 0)
