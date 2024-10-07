@@ -11,38 +11,44 @@ $ pip install data-complexity
 ## How it works
 ### Maximum Fisher's Discriminant Ratio (F1)
 ```python
-from dcm import dcm
+import dcm
 from sklearn import datasets
 
 iris = datasets.load_iris()
 X = iris.data
 y = iris.target
 
-index, F1 = dcm.F1(X, y)
+feat = dcm.FeatureBasedMeasures()
+feat.fit(X, y)
+feat.transform()
 ```
 
 ### Fraction of Borderline Points (N1)
 ```python
-from dcm import dcm
+import dcm
 from sklearn import datasets
 
 bc = datasets.load_breast_cancer(as_frame=True)
 X = bc.data.values
 y = bc.target.values
 
-N1 = dcm.N1(X, y)
+nmeans = dcm.NeighborhoodMeasures()
+nmeans.fit(X,y)
+nmeans.transform()
 ```
 
 ### Entropy of Class Proportions (C1) and Imbalance Ratio (C2)
 ```python
-from dcm import dcm
+import dcm
 from sklearn import datasets
 
 bc = datasets.load_breast_cancer(as_frame=True)
 X = bc.data.values
 y = bc.target.values
 
-C1, C2 = dcm.C12(X, y)
+imb = dcm.ImbalanceMeasures()
+imb.fit(X,y)
+imb.transform()
 ```
 
 ### Other Measures
