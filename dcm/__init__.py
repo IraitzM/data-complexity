@@ -1,9 +1,11 @@
 __version__ = "0.1.3"
 
 import os
+
 __DEBUG__ = os.environ.get("DCM_DEBUG", 0)
 
-from dcm.mst import MST
-
-# Data Complexity Measures
-from dcm.dcm import F1, N1, C12
+from .feature_based import FeatureBasedMeasures
+from .neighborhood import NeighborhoodMeasures
+from .balance import BalanceMeasures
+from .imbalance import ImbalanceMeasures
+from .linearity import LinearityMeasures

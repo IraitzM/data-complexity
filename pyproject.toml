@@ -7,8 +7,9 @@ authors = [
 dependencies = [
     "numpy>=1.25.2",
     "gower>=0.1.2",
+    "networkx>=3.2.1",
 ]
-requires-python = ">=3.9, <3.13"
+requires-python = ">=3.9, <3.14"
 readme = "README.md"
 license = {text = "MIT"}
 dynamic = ["version"]
