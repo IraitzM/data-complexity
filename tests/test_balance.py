@@ -5,13 +5,7 @@ Filename: test_balance.py
 import numpy
 import unittest
 from dcm import BalanceMeasures
-from sklearn.datasets import load_iris
-
-"""
-The TestPassed class iterates through the list of grades. 
-For each grade, it checks if it is between 0 and 100. 
-If not, it fails the test.
-"""
+from sklearn.datasets import load_iris, load_breast_cancer
 
 
 class TestBalance(unittest.TestCase):
@@ -34,3 +28,24 @@ class TestBalance(unittest.TestCase):
 
         numpy.testing.assert_allclose(model.c_B1(), 0.0, atol=0)
         numpy.testing.assert_allclose(model.c_B2(), 0.0, atol=0)
+
+class TestBalance2(unittest.TestCase):
+    def setUp(self):
+        X, y = load_breast_cancer(return_X_y=True)
+
+        self.X = X
+        self.y = y
+
+    def test_cancer(self):
+        model = BalanceMeasures()
+        model.fit(self.X, self.y)
+
+        numpy.testing.assert_allclose(model.c_B1(), 0.047365, atol=1e-4)
+        numpy.testing.assert_allclose(model.c_B2(), 0.12196, atol=1e-4)
+
+    def test_cancer_100(self):
+        model = BalanceMeasures()
+        model.fit(self.X[:100], self.y[:100])
+
+        numpy.testing.assert_allclose(model.c_B1(), 0.07, atol=1e-2)
+        numpy.testing.assert_allclose(model.c_B2(), 0.165138, atol=1e-6)

@@ -35,5 +35,5 @@ examples = [
     "seaborn>=0.13.0",
 ]
 tests = [
-    "nose2>=0.13.0",
+    "nose2[coverage_plugin]>=0.15.1",
 ]
