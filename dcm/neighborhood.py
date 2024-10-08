@@ -32,10 +32,10 @@ class NeighborhoodMeasures(BaseEstimator):
 
         return self
 
-    def transform(self, X=None, y=None):
+    def transform(self):
         result = {}
         for measure in self.measures:
-            method = getattr(self, f"c_{measure}")
+            method = getattr(self, f"{measure}")
             measure_result = method()
             result[measure] = self.summarization(measure_result)
         return result
@@ -58,7 +58,7 @@ class NeighborhoodMeasures(BaseEstimator):
             summary_dict["std"] = np.std(measure)
         return summary_dict
 
-    def c_N1(self):
+    def N1(self):
         G = nx.Graph(self.dst_matrix)
         mst = nx.minimum_spanning_tree(G)
         edges = list(mst.edges())
@@ -75,7 +75,7 @@ class NeighborhoodMeasures(BaseEstimator):
         diff_class = self.data[self.data["class"] != self.data.iloc[i]["class"]].index
         return np.min(self.dst_matrix[i, diff_class])
 
-    def c_N2(self):
+    def N2(self):
         intra_distances = np.array([self.intra(i) for i in range(self.data.shape[0])])
         inter_distances = np.array([self.inter(i) for i in range(self.data.shape[0])])
         return 1 - (1 / ((intra_distances / inter_distances) + 1))
@@ -84,7 +84,7 @@ class NeighborhoodMeasures(BaseEstimator):
         indices = np.argsort(self.dst_matrix, axis=1)[:, 1 : k + 1]  # exclude self
         return np.array([self.data.iloc[idx]["class"].mode()[0] for idx in indices])
 
-    def c_N3(self):
+    def N3(self):
         knn_classes = self.knn(2)
         return np.mean(knn_classes != self.data["class"])
 
@@ -97,7 +97,7 @@ class NeighborhoodMeasures(BaseEstimator):
             new_data.append(new_instance)
         return pd.DataFrame(new_data)
 
-    def c_N4(self):
+    def N4(self):
         generated_data = self.c_generate(self.data.shape[0])
         combined_data = pd.concat([self.data, generated_data], ignore_index=True)
 
@@ -154,13 +154,13 @@ class NeighborhoodMeasures(BaseEstimator):
 
         return h, n
 
-    def c_N5(self):
+    def N5(self):
         r = self.hypersphere()
         adh = self.translate(r)
         h, _ = self.adherence(adh)
         return len(h) / self.data.shape[0]
 
-    def c_N6(self):
+    def N6(self):
         r = np.array([self.inter(i) for i in range(self.data.shape[0])])
         adh = self.translate(r)
         return 1 - np.sum(adh) / (self.data.shape[0] ** 2)

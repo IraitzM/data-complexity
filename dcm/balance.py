@@ -27,7 +27,7 @@ class BalanceMeasures(BaseEstimator):
     def transform(self, X=None, y=None):
         result = {}
         for measure in self.measures:
-            method = getattr(self, f"c_{measure}")
+            method = getattr(self, f"{measure}")
             result[measure] = method()
         return result
 
@@ -35,12 +35,12 @@ class BalanceMeasures(BaseEstimator):
     def ls_balance():
         return ["B1", "B2"]
 
-    def c_B1(self):
+    def B1(self):
         c = -1 / np.log(self.y.nunique())
         i = self.y.value_counts(normalize=True)
         return 1 + c * entropy(i)
 
-    def c_B2(self):
+    def B2(self):
         ii = self.y.value_counts()
         nc = len(ii)
         aux = ((nc - 1) / nc) * np.sum(ii / (len(self.y) - ii))

@@ -34,7 +34,7 @@ class ImbalanceMeasures(BaseEstimator):
     def transform(self):
         result = {}
         for measure in self.measures:
-            method = getattr(self, f"r_{measure}")
+            method = getattr(self, f"{measure}")
             measure_result = method()
             result[measure] = self.summarization(measure_result)
         return result
@@ -75,7 +75,7 @@ class ImbalanceMeasures(BaseEstimator):
         else:
             return scaler.fit_transform(data.reshape(-1, 1))
 
-    def r_C1(self):
+    def C1(self):
         n = len(self.data["class"])
         class_proportion = self.data["class"].value_counts()
 
@@ -88,7 +88,7 @@ class ImbalanceMeasures(BaseEstimator):
         # Calculate entropy
         return -(1 / np.log2(nc)) * proportions
 
-    def r_C2(self):
+    def C2(self):
         n = len(self.data["class"])
         class_proportion = self.data["class"].value_counts()
 

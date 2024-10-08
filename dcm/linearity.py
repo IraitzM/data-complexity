@@ -58,7 +58,7 @@ class LinearityMeasures(BaseEstimator):
     def transform(self):
         result = {}
         for measure in self.measures:
-            method = getattr(self, f"c_{measure}")
+            method = getattr(self, f"{measure}")
             measure_result = method()
             result[measure] = self.summarization(measure_result)
         return result
@@ -92,7 +92,7 @@ class LinearityMeasures(BaseEstimator):
             X = pd.concat([X.drop(columns=categorical_cols), encoded_df], axis=1)
         return X
 
-    def c_L1(self):
+    def L1(self):
         """
         Sum of error distance by linear programming
 
@@ -114,8 +114,8 @@ class LinearityMeasures(BaseEstimator):
 
         return 1 - (1 / (1 + sum(error_dist)))
 
-    def c_L2(self):
+    def L2(self):
         raise NotImplementedError
 
-    def c_L3(self):
+    def L3(self):
         raise NotImplementedError

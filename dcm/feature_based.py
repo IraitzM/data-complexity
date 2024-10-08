@@ -57,7 +57,7 @@ class FeatureBasedMeasures(BaseEstimator):
     def transform(self):
         result = {}
         for measure in self.measures:
-            method = getattr(self, f"c_{measure}")
+            method = getattr(self, f"{measure}")
             measure_result = method()
             result[measure] = self.summarization(measure_result)
         return result
@@ -94,7 +94,7 @@ class FeatureBasedMeasures(BaseEstimator):
     def branch(self, j):
         return self.data[self.data["class"] == j].drop("class", axis=1)
 
-    def c_F1(self):
+    def F1(self):
         """
         Maximum Fisher's Discriminant Ratio (F1)
 
@@ -126,7 +126,7 @@ class FeatureBasedMeasures(BaseEstimator):
 
         return 1 / (max_ri + 1)
 
-    def c_F1v(self):
+    def F1v(self):
         """
         The Directional-vector Maximum Fisher's Discriminant Ratio.
 
@@ -152,7 +152,7 @@ class FeatureBasedMeasures(BaseEstimator):
         f1v = [dvector(data) for data in ovo_data]
         return 1 / (np.array(f1v) + 1)
 
-    def c_F2(self):
+    def F2(self):
         """
         Value of overlapping region
         """
@@ -174,7 +174,7 @@ class FeatureBasedMeasures(BaseEstimator):
         ovo_data = ovo(self.data)
         return [region_over(data) for data in ovo_data]
 
-    def c_F3(self):
+    def F3(self):
         def non_overlap(data):
             classes = data["class"].unique()
             a = self.branch(classes[0])
@@ -192,7 +192,7 @@ class FeatureBasedMeasures(BaseEstimator):
         f3 = [non_overlap(data) for data in ovo_data]
         return 1 - np.max(f3, axis=0)
 
-    def c_F4(self):
+    def F4(self):
         def removing(data):
             while True:
                 non_overlap = (
