@@ -29,6 +29,7 @@ class TestFeatures(unittest.TestCase):
         numpy.testing.assert_allclose(model.F1(), 0.059119, atol=1e-06)
         numpy.testing.assert_allclose(model.F4(), 0.0, atol=1e-06)
 
+
 class TestFeatures2(unittest.TestCase):
     def setUp(self):
         X, y = load_breast_cancer(return_X_y=True)

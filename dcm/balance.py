@@ -24,7 +24,7 @@ class BalanceMeasures(BaseEstimator):
 
         return self
 
-    def transform(self, X=None, y=None):
+    def transform(self):
         result = {}
         for measure in self.measures:
             method = getattr(self, f"{measure}")

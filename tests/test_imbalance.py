@@ -29,6 +29,7 @@ class TestImbalance(unittest.TestCase):
         numpy.testing.assert_allclose(model.C1(), 1.0, atol=1e-06)
         numpy.testing.assert_allclose(model.C2(), 0, atol=1e-06)
 
+
 class TestImbalance2(unittest.TestCase):
     def setUp(self):
         X, y = load_breast_cancer(return_X_y=True)

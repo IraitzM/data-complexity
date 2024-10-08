@@ -27,6 +27,7 @@ class TestLinearity(unittest.TestCase):
 
         numpy.testing.assert_allclose(model.L1(), 0.0, atol=0)
 
+
 class TestLinearity2(unittest.TestCase):
     def setUp(self):
         X, y = load_breast_cancer(return_X_y=True)

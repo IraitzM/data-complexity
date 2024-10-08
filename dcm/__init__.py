@@ -9,3 +9,4 @@ from .neighborhood import NeighborhoodMeasures
 from .balance import BalanceMeasures
 from .imbalance import ImbalanceMeasures
 from .linearity import LinearityMeasures
+from .smoothness import Smoothness
