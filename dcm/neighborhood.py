@@ -164,3 +164,9 @@ class NeighborhoodMeasures(BaseEstimator):
         r = np.array([self.inter(i) for i in range(self.data.shape[0])])
         adh = self.translate(r)
         return 1 - np.sum(adh) / (self.data.shape[0] ** 2)
+
+    def T1(self):
+        raise NotImplementedError
+
+    def LSC(self):
+        raise NotImplementedError
