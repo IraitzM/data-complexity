@@ -1,15 +1,16 @@
-# data-complexity
-The Data Complexity Measures in Python
+# Data Complexity
 
+The Data Complexity Measures in pure Python.
 
 ## Install
 ```bash
 $ pip install data-complexity
 ```
 
-
 ## How it works
-### Maximum Fisher's Discriminant Ratio (F1)
+
+One can import the model and use the common _.fit()_ and _.transform()_ functions (sklearn-like interface)
+
 ```python
 import dcm
 from sklearn import datasets
@@ -18,42 +19,10 @@ iris = datasets.load_iris()
 X = iris.data
 y = iris.target
 
-feat = dcm.FeatureBasedMeasures()
-feat.fit(X, y)
-feat.transform()
+model = dcm.ComplexityProfile()
+model.fit(X, y)
+model.transform()
 ```
-
-### Fraction of Borderline Points (N1)
-```python
-import dcm
-from sklearn import datasets
-
-bc = datasets.load_breast_cancer(as_frame=True)
-X = bc.data.values
-y = bc.target.values
-
-nmeans = dcm.NeighborhoodMeasures()
-nmeans.fit(X,y)
-nmeans.transform()
-```
-
-### Entropy of Class Proportions (C1) and Imbalance Ratio (C2)
-```python
-import dcm
-from sklearn import datasets
-
-bc = datasets.load_breast_cancer(as_frame=True)
-X = bc.data.values
-y = bc.target.values
-
-imb = dcm.ImbalanceMeasures()
-imb.fit(X,y)
-imb.transform()
-```
-
-### Other Measures
-Coming soon...
-
 
 ## References
 [1] How Complex is your classification problem? A survey on measuring classification complexity, https://arxiv.org/abs/1808.03591
