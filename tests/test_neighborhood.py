@@ -4,7 +4,7 @@ Filename: test_neighborhood.py
 
 import numpy
 import unittest
-from dcm import NeighborhoodMeasures
+from dcm import ComplexityProfile
 from sklearn.datasets import load_iris, load_breast_cancer
 
 
@@ -16,7 +16,7 @@ class TestNeighborhood(unittest.TestCase):
         self.y = y
 
     def test_iris(self):
-        model = NeighborhoodMeasures()
+        model = ComplexityProfile()
         model.fit(self.X, self.y)
 
         numpy.testing.assert_allclose(model.N1(), 0.053333, atol=1e-06)
@@ -26,7 +26,7 @@ class TestNeighborhood(unittest.TestCase):
         numpy.testing.assert_allclose(model.N6(), 0.804356, atol=1e-06)
 
     def test_iris_100(self):
-        model = NeighborhoodMeasures()
+        model = ComplexityProfile()
         model.fit(self.X[:100], self.y[:100])
 
         numpy.testing.assert_allclose(model.N1(), 0.01, atol=0)
@@ -44,7 +44,7 @@ class TestNeighborhood2(unittest.TestCase):
         self.y = y
 
     def test_cancer(self):
-        model = NeighborhoodMeasures()
+        model = ComplexityProfile()
         model.fit(self.X, self.y)
 
         numpy.testing.assert_allclose(model.N1(), 0.086116, atol=1e-06)
@@ -54,7 +54,7 @@ class TestNeighborhood2(unittest.TestCase):
         numpy.testing.assert_allclose(model.N6(), 0.912293, atol=1e-06)
 
     def test_cancer_100(self):
-        model = NeighborhoodMeasures()
+        model = ComplexityProfile()
         model.fit(self.X[:100], self.y[:100])
 
         numpy.testing.assert_allclose(model.N1(), 0.1, atol=0)
