@@ -8,7 +8,7 @@ from dcm import ComplexityProfile
 from sklearn.datasets import load_iris, load_breast_cancer
 
 
-class TestImbalance(unittest.TestCase):
+class TestCorrelation(unittest.TestCase):
     def setUp(self):
         X, y = load_iris(return_X_y=True)
 
@@ -30,7 +30,7 @@ class TestImbalance(unittest.TestCase):
         numpy.testing.assert_allclose(model.C2(), 0, atol=1e-06)
 
 
-class TestImbalance2(unittest.TestCase):
+class TestCorrelation2(unittest.TestCase):
     def setUp(self):
         X, y = load_breast_cancer(return_X_y=True)
 

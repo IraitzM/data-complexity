@@ -6,6 +6,7 @@ from .utils import ovo
 from scipy.stats import entropy
 from sklearn.base import BaseEstimator
 from sklearn import svm
+from sklearn.decomposition import PCA
 from sklearn.preprocessing import OneHotEncoder
 from scipy.spatial.distance import pdist, squareform
 from sklearn.neighbors import KNeighborsRegressor
@@ -96,17 +97,19 @@ class ComplexityProfile(BaseEstimator):
     def ls_measures():
         return [
             # Feature based
-            "F1", "F1v", "F2", "F3", "F4",
+            "F1", "F1v", "F2", "F3",
+            # Linearity
+            "L1",
+            # Neighborhood
+            "N1", "N2", "N3", "N4", #"N5", "N6",
             #Balance
             "B1", "B2",
             # Smoothness
             "S1", "S2", "S3", "S4",
-            # Imbalance
+            # Correlation
             "C1", "C2",
-            # Neighborhood
-            "N1", "N2", "N3", "N4", "N5", "N6",
-            # Linearity
-            "L1"
+            # Dimensionality
+            "T2", "T3", "T4"
             ]
 
     # Feature based
@@ -284,8 +287,7 @@ class ComplexityProfile(BaseEstimator):
         tmp.columns = list(self.x.columns) + ["y"]
         return tmp
 
-    # Imbalance
-
+    # Correlation
     def C1(self):
         n = len(self.data["class"])
         class_proportion = self.data["class"].value_counts()
@@ -313,7 +315,6 @@ class ComplexityProfile(BaseEstimator):
         return 1 - 1 / IR
 
     # Linearity
-
     def L1(self):
         """
         Sum of error distance by linear programming
@@ -343,7 +344,6 @@ class ComplexityProfile(BaseEstimator):
         raise NotImplementedError
 
     # Neighborhood
-
     def N1(self):
         G = nx.Graph(self.dst_matrix)
         mst = nx.minimum_spanning_tree(G)
@@ -458,8 +458,13 @@ class ComplexityProfile(BaseEstimator):
         raise NotImplementedError
 
     # Balance
-
     def B1(self):
+        """
+        Class balance
+
+        Returns:
+            float: Value of the entropy associated with the label
+        """
         c = -1 / np.log(self.y.nunique())
         i = self.y.value_counts(normalize=True)
         return 1 + c * entropy(i)
@@ -469,3 +474,25 @@ class ComplexityProfile(BaseEstimator):
         nc = len(ii)
         aux = ((nc - 1) / nc) * np.sum(ii / (len(self.y) - ii))
         return 1 - (1 / aux)
+
+    # Dimension
+    def pca_variance(self):
+        """Python equivalent of R's pca function."""
+        pca = PCA()
+        pca.fit(self.x)
+        cumsum = np.cumsum(pca.explained_variance_ratio_)
+        # Find number of components needed for 95% variance
+        n_components = np.argmax(cumsum >= 0.95) + 1
+        return n_components
+
+    def T2(self):
+        """Ratio of number of features to number of instances."""
+        return self.x.shape[1] / self.x.shape[0]
+
+    def T3(self):
+        """Ratio of PCA components to number of instances."""
+        return self.pca_variance() / self.x.shape[0]
+
+    def T4(self):
+        """Ratio of PCA components to number of features."""
+        return self.pca_variance() / self.x.shape[1]
