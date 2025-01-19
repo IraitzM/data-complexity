@@ -1,47 +1,48 @@
 import pandas as pd
 import numpy as np
 import networkx as nx
-from .utils import ovo
+from . import utils
 
 from scipy.stats import entropy
 from sklearn.base import BaseEstimator
 from sklearn import svm
 from sklearn.decomposition import PCA
-from sklearn.preprocessing import OneHotEncoder
 from scipy.spatial.distance import pdist, squareform
 from sklearn.neighbors import KNeighborsRegressor
 
 class ComplexityProfile(BaseEstimator):
+    """_summary_
+
+    Args:
+        BaseEstimator (_type_): _description_
+    """
     def __init__(self, measures="all"):
         """
         Class initialization
 
         Args:
             measures (str, optional): _description_. Defaults to "all".
-            summary (list, optional): _description_. Defaults to ["mean", "std"].
         """
-        self.measures = measures
+        # Select measures
+        self.measures = self.ls_measures(measures)
 
         # Initialized
         self.x = None
         self.y = None
         self.d = None
 
-    def normalize(self, df):
-        return (df - df.mean()) / df.std()
-
-    def binarize(self, X):
-        categorical_cols = X.select_dtypes(include=["object", "category"]).columns
-        if not categorical_cols.empty:
-            enc = OneHotEncoder(handle_unknown="ignore")
-            encoded = enc.fit_transform(X[categorical_cols])
-            encoded_df = pd.DataFrame(
-                encoded, columns=enc.get_feature_names_out(categorical_cols)
-            )
-            X = pd.concat([X.drop(columns=categorical_cols), encoded_df], axis=1)
-        return X
-
     def fit(self, x, y):
+        """_summary_
+
+        Args:
+            x (_type_): _description_
+            y (_type_): _description_
+
+        Raises:
+            ValueError: _description_
+            ValueError: _description_
+            ValueError: _description_
+        """
         if not isinstance(x, pd.DataFrame):
             x = pd.DataFrame(x)
 
@@ -58,19 +59,14 @@ class ComplexityProfile(BaseEstimator):
         if len(x) != len(y):
             raise ValueError("x and y must have same number of rows")
 
-        if self.measures == "all":
-            self.measures = self.ls_measures()
-        else:
-            self.measures = [m for m in self.measures if m in self.ls_measures()]
-
         x.columns = [f"feat_{i}" for i in range(x.shape[1])]
 
-        self.data = pd.concat([self.binarize(x), y.rename("class")], axis=1)
+        self.data = pd.concat([utils.binarize(x), y.rename("class")], axis=1)
         self.dst = pdist(x)
         self.dst_matrix = squareform(self.dst)
 
-        x = self.normalize(x)
-        y = self.normalize(pd.DataFrame(y)).iloc[:, 0]
+        x = utils.normalize(x)
+        y = utils.normalize(pd.DataFrame(y)).iloc[:, 0]
 
         sorted_indices = np.argsort(y)
         self.x = x.iloc[sorted_indices].reset_index(drop=True)
@@ -94,26 +90,41 @@ class ComplexityProfile(BaseEstimator):
         return result
 
     @staticmethod
-    def ls_measures():
-        return [
+    def ls_measures(measures):
+        """
+        List available measures by group
+        """
+        measure_dict = {
             # Feature based
-            "F1", "F1v", "F2", "F3",
+            "features": ["F1", "F1v", "F2", "F3"],
             # Linearity
-            "L1",
+            "linear" : ["L1"],
             # Neighborhood
-            "N1", "N2", "N3", "N4", #"N5", "N6",
+            "neighborhood": ["N1", "N2", "N3", "N4"], #"N5", "N6"
             #Balance
-            "B1", "B2",
+            "balance": ["B1", "B2"],
             # Smoothness
-            "S1", "S2", "S3", "S4",
+            "smoothness" : ["S1", "S2", "S3", "S4"],
             # Correlation
-            "C1", "C2",
+            "correlation" : ["C1", "C2"],
             # Dimensionality
-            "T2", "T3", "T4"
-            ]
+            "dimensionality" : ["T2", "T3", "T4"]
+        }
+
+        # Check list of measures
+        all_measures = [m for m_list in measure_dict.values() for m in m_list]
+        if isinstance(measures, list):
+            if set(measures).issubset(set(all_measures)):
+                return measures
+
+        if measures in measure_dict:
+            return measure_dict[measures]
+        elif isinstance(measures, str) and measures in all_measures:
+            return [measures]
+
+        return all_measures
 
     # Feature based
-
     def branch(self, j):
         return self.data[self.data["class"] == j].drop("class", axis=1)
 
@@ -170,7 +181,7 @@ class ComplexityProfile(BaseEstimator):
 
             return (d.T @ B @ d) / (d.T @ W @ d)
 
-        ovo_data = ovo(self.data)
+        ovo_data = utils.ovo(self.data)
         f1v = [dvector(data) for data in ovo_data]
         return 1 / (np.array(f1v) + 1)
 
@@ -193,7 +204,7 @@ class ComplexityProfile(BaseEstimator):
             rang = maxmax - minmin
             return np.prod(over / rang)
 
-        ovo_data = ovo(self.data)
+        ovo_data = utils.ovo(self.data)
         return [region_over(data) for data in ovo_data]
 
     def F3(self):
@@ -210,7 +221,7 @@ class ComplexityProfile(BaseEstimator):
                 | (data.drop("class", axis=1) > minmax)
             ).sum() / len(data)
 
-        ovo_data = ovo(self.data)
+        ovo_data = utils.ovo(self.data)
         f3 = [non_overlap(data) for data in ovo_data]
         return 1 - np.max(f3, axis=0)
 
@@ -233,7 +244,7 @@ class ComplexityProfile(BaseEstimator):
 
             return data
 
-        ovo_data = ovo(self.data)
+        ovo_data = utils.ovo(self.data)
         return [len(removing(data)) / len(data) for data in ovo_data]
 
     # Smoothness
@@ -323,7 +334,7 @@ class ComplexityProfile(BaseEstimator):
             float: L1
         """
         X = self.data.drop("class", axis=1)
-        ovo_data = ovo(self.data)
+        ovo_data = utils.ovo(self.data)
 
         error_dist = []
         for data in ovo_data:
@@ -404,7 +415,8 @@ class ComplexityProfile(BaseEstimator):
                 i, self.data[self.data["class"] != self.data.iloc[i]["class"]].index
             ]
         )
-        dj = self.inter(j)
+
+        _ = self.inter(j)
         k = np.argmin(
             self.dst_matrix[
                 j, self.data[self.data["class"] != self.data.iloc[j]["class"]].index

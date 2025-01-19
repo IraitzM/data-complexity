@@ -24,6 +24,8 @@ model.fit(X, y)
 model.transform()
 ```
 
+Complexity profile takes different inputs from none to specific measures to be obtained.
+
 ## References
 [1] How Complex is your classification problem? A survey on measuring classification complexity, https://arxiv.org/abs/1808.03591
 
