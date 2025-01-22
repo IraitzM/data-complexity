@@ -23,7 +23,7 @@ def plot_profile(profile_json):
 
     # Add a legend and informative axis label
     ax.set(ylabel="", xlabel="Complexity metrics")
-    ax.set(ylim=(0.0,1.0))
+    ax.set(ylim=(0.0, 1.0))
     sns.despine(left=True, bottom=True)
 
 
@@ -68,9 +68,10 @@ def colMin(df: pd.DataFrame):
     """
     return df.min()
 
-def normalize(df:pd.DataFrame):
+
+def normalize(df: pd.DataFrame):
     """
-    Normalization of data 
+    Normalization of data
 
     Args:
         df (pd.DataFrame): Dataframe, all numeric.
@@ -79,6 +80,7 @@ def normalize(df:pd.DataFrame):
         pd.DataFrame: Normalizar dataset
     """
     return (df - df.mean()) / df.std()
+
 
 def binarize(X):
     """_summary_

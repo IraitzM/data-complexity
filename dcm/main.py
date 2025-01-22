@@ -10,12 +10,14 @@ from sklearn.decomposition import PCA
 from scipy.spatial.distance import pdist, squareform
 from sklearn.neighbors import KNeighborsRegressor
 
+
 class ComplexityProfile(BaseEstimator):
     """_summary_
 
     Args:
         BaseEstimator (_type_): _description_
     """
+
     def __init__(self, measures="all"):
         """
         Class initialization
@@ -77,7 +79,7 @@ class ComplexityProfile(BaseEstimator):
     def summarization(self, measure):
         return float(np.mean(measure))
 
-    def transform(self, return_type:str = "dict"):
+    def transform(self, return_type: str = "dict"):
         result = {}
         for measure in self.measures:
             method = getattr(self, f"{measure}")
@@ -98,17 +100,17 @@ class ComplexityProfile(BaseEstimator):
             # Feature based
             "features": ["F1", "F1v", "F2", "F3"],
             # Linearity
-            "linear" : ["L1"],
+            "linear": ["L1"],
             # Neighborhood
-            "neighborhood": ["N1", "N2", "N3", "N4"], #"N5", "N6"
-            #Balance
+            "neighborhood": ["N1", "N2", "N3", "N4"],  # "N5", "N6"
+            # Balance
             "balance": ["B1", "B2"],
             # Smoothness
-            "smoothness" : ["S1", "S2", "S3", "S4"],
+            "smoothness": ["S1", "S2", "S3", "S4"],
             # Correlation
-            "correlation" : ["C1", "C2"],
+            "correlation": ["C1", "C2"],
             # Dimensionality
-            "dimensionality" : ["T2", "T3", "T4"]
+            "dimensionality": ["T2", "T3", "T4"],
         }
 
         # Check list of measures
@@ -254,7 +256,8 @@ class ComplexityProfile(BaseEstimator):
         tree = nx.minimum_spanning_tree(g)
         edges = list(tree.edges())
         aux = np.abs(
-            self.y.iloc[[e[0] for e in edges]].values - self.y.iloc[[e[1] for e in edges]].values
+            self.y.iloc[[e[0] for e in edges]].values
+            - self.y.iloc[[e[1] for e in edges]].values
         )
         return aux / (aux + 1)
 
@@ -281,7 +284,9 @@ class ComplexityProfile(BaseEstimator):
         rnd = np.random.uniform()
         for j in range(len(self.x.columns)):
             if np.issubdtype(self.x.iloc[:, j].dtype, np.number):
-                aux.iloc[0, j] = aux.iloc[0, j] + (aux.iloc[1, j] - aux.iloc[0, j]) * rnd
+                aux.iloc[0, j] = (
+                    aux.iloc[0, j] + (aux.iloc[1, j] - aux.iloc[0, j]) * rnd
+                )
             else:
                 aux.iloc[0, j] = np.random.choice(aux.iloc[:, j])
 

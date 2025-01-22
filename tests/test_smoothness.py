@@ -15,7 +15,7 @@ class TestSmoothness(unittest.TestCase):
         self.X = X
         self.y = y
 
-        self.measures = ["S1", "S2", "S3","S4"]
+        self.measures = ["S1", "S2", "S3", "S4"]
 
     def test_iris(self):
         model = ComplexityProfile(self.measures)
