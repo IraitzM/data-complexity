@@ -1,4 +1,5 @@
-[![SQAaaS badge](https://github.com/EOSC-synergy/SQAaaS/raw/master/badges/badges_150x116/badge_software_gold.png)](https://api.eu.badgr.io/public/assertions/_HIuuD5PRMipzM62mWTk3Q "SQAaaS gold badge achieved")
+[![SQAaaS badge shields.io](https://img.shields.io/badge/sqaaas%20software-bronze-e6ae77)]
+(https://api.eu.badgr.io/public/assertions/zd_rA4XiTIqVnss6UlVj-Q "SQAaaS bronze badge achieved")
 
 # Data Complexity
 
