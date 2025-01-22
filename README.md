@@ -3,13 +3,15 @@
 The Data Complexity Measures in pure Python.
 
 ## Install
+
 ```bash
-$ pip install data-complexity
+pip install data-complexity
 ```
 
 ## How it works
 
-One can import the model and use the common _.fit()_ and _.transform()_ functions (sklearn-like interface)
+One can import the model and use the common _.fit()_ and 
+_.transform()_ functions (sklearn-like interface)
 
 ```python
 import dcm
@@ -24,9 +26,13 @@ model.fit(X, y)
 model.transform()
 ```
 
-Complexity profile takes different inputs from none to specific measures to be obtained.
+Complexity profile takes different inputs from none to 
+specific measures to be obtained.
 
 ## References
-[1] How Complex is your classification problem? A survey on measuring classification complexity, https://arxiv.org/abs/1808.03591
 
-[2] The Extended Complexity Library (ECoL), https://github.com/lpfgarcia/ECoL
+[1] How Complex is your classification problem? A survey on measuring 
+classification complexity, [ArXiv](https://arxiv.org/abs/1808.03591)
+
+[2] The Extended Complexity Library (ECoL), 
+[github repo](https://github.com/lpfgarcia/ECoL)
