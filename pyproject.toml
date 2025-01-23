@@ -44,6 +44,27 @@ release = [
     "python-semantic-release>=9.16.1",
 ]
 
+# Ruff
+[tool.ruff]
+exclude = [".venv","data"]
+
+# - https://docs.astral.sh/ruff/rules/
+[tool.ruff.lint]
+extend-select = [
+  "UP",  # pyupgrade
+  "D",   # pydocstyle
+  "F",   # fake8
+  "E",   # PyCodeStyle
+  "I",   # isort
+  "N",   # Naming
+  "RUF", # Ruff
+  "PL",  # PyLint
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+# SemVer
 [tool.semantic_release]
 assets = []
 build_command_env = []

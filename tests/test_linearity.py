@@ -1,11 +1,12 @@
-"""
-Filename: test_linearity.py
+"""Filename: test_linearity.py
 """
 
-import numpy
 import unittest
+
+import numpy
+from sklearn.datasets import load_breast_cancer, load_iris
+
 from dcm import ComplexityProfile
-from sklearn.datasets import load_iris, load_breast_cancer
 
 
 class TestLinearity(unittest.TestCase):

@@ -1,14 +1,14 @@
-import pandas as pd
-import numpy as np
 import networkx as nx
-from . import utils
-
-from scipy.stats import entropy
-from sklearn.base import BaseEstimator
-from sklearn import svm
-from sklearn.decomposition import PCA
+import numpy as np
+import pandas as pd
 from scipy.spatial.distance import pdist, squareform
+from scipy.stats import entropy
+from sklearn import svm
+from sklearn.base import BaseEstimator
+from sklearn.decomposition import PCA
 from sklearn.neighbors import KNeighborsRegressor
+
+from . import utils
 
 
 class ComplexityProfile(BaseEstimator):
@@ -19,8 +19,7 @@ class ComplexityProfile(BaseEstimator):
     """
 
     def __init__(self, measures="all"):
-        """
-        Class initialization
+        """Class initialization
 
         Args:
             measures (str, optional): _description_. Defaults to "all".
@@ -93,8 +92,7 @@ class ComplexityProfile(BaseEstimator):
 
     @staticmethod
     def ls_measures(measures):
-        """
-        List available measures by group
+        """List available measures by group
         """
         measure_dict = {
             # Feature based
@@ -131,8 +129,7 @@ class ComplexityProfile(BaseEstimator):
         return self.data[self.data["class"] == j].drop("class", axis=1)
 
     def F1(self):
-        """
-        Maximum Fisher's Discriminant Ratio (F1)
+        """Maximum Fisher's Discriminant Ratio (F1)
 
         Returns:
             float: F1
@@ -163,8 +160,7 @@ class ComplexityProfile(BaseEstimator):
         return 1 / (max_ri + 1)
 
     def F1v(self):
-        """
-        The Directional-vector Maximum Fisher's Discriminant Ratio.
+        """The Directional-vector Maximum Fisher's Discriminant Ratio.
 
         Uses one-vs-one for multiclass problems.
         """
@@ -188,8 +184,7 @@ class ComplexityProfile(BaseEstimator):
         return 1 / (np.array(f1v) + 1)
 
     def F2(self):
-        """
-        Value of overlapping region
+        """Value of overlapping region
         """
 
         def region_over(data):
@@ -332,8 +327,7 @@ class ComplexityProfile(BaseEstimator):
 
     # Linearity
     def L1(self):
-        """
-        Sum of error distance by linear programming
+        """Sum of error distance by linear programming
 
         Returns:
             float: L1
@@ -476,8 +470,7 @@ class ComplexityProfile(BaseEstimator):
 
     # Balance
     def B1(self):
-        """
-        Class balance
+        """Class balance
 
         Returns:
             float: Value of the entropy associated with the label

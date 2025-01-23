@@ -1,13 +1,13 @@
+from itertools import combinations
+
+import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
-import matplotlib.pyplot as plt
 from sklearn.preprocessing import OneHotEncoder
-from itertools import combinations
 
 
 def plot_profile(profile_json):
-    """
-    Plots the barplot with the complexity measures
+    """Plots the barplot with the complexity measures
 
     Args:
         profile_json (_type_): _description_
@@ -28,8 +28,7 @@ def plot_profile(profile_json):
 
 
 def ovo(data):
-    """
-    One-vs-one takes the data in pairs
+    """One-vs-one takes the data in pairs
 
     Args:
         data (DataFrame): Data with class column informed
@@ -44,8 +43,7 @@ def ovo(data):
 
 
 def colMax(df: pd.DataFrame):
-    """
-    Max of a column
+    """Max of a column
 
     Args:
         df (_type_): _description_
@@ -57,8 +55,7 @@ def colMax(df: pd.DataFrame):
 
 
 def colMin(df: pd.DataFrame):
-    """
-    Min of a column
+    """Min of a column
 
     Args:
         df (_type_): _description_
@@ -70,8 +67,7 @@ def colMin(df: pd.DataFrame):
 
 
 def normalize(df: pd.DataFrame):
-    """
-    Normalization of data
+    """Normalization of data
 
     Args:
         df (pd.DataFrame): Dataframe, all numeric.

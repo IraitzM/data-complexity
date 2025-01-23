@@ -1,11 +1,12 @@
-"""
-Filename: test_imbalance.py
+"""Filename: test_imbalance.py
 """
 
-import numpy
 import unittest
+
+import numpy
+from sklearn.datasets import load_breast_cancer, load_iris
+
 from dcm import ComplexityProfile
-from sklearn.datasets import load_iris, load_breast_cancer
 
 
 class TestCorrelation(unittest.TestCase):
