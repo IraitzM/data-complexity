@@ -4,3 +4,13 @@ data_complexity.egg-info/
 dist/
 */__pycache__/*
 !examples/datasets/.keep
+
+# Local env
+.env
+.venv
+
+# PDM
+.pdm-python
+
+# coverage
+.coverage

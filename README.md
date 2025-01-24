@@ -1,55 +1,40 @@
-# data-complexity
-The Data Complexity Measures in Python
+[![SQAaaS badge shields.io](https://img.shields.io/badge/sqaaas%20software-bronze-e6ae77)](https://api.eu.badgr.io/public/assertions/zd_rA4XiTIqVnss6UlVj-Q "SQAaaS bronze badge achieved")
 
+# Data Complexity
+
+The Data Complexity Measures in pure Python.
 
 ## Install
+
 ```bash
-$ pip install data-complexity
+pip install data-complexity
 ```
 
-
 ## How it works
-### Maximum Fisher's Discriminant Ratio (F1)
+
+One can import the model and use the common _.fit()_ and
+_.transform()_ functions (sklearn-like interface)
+
 ```python
-from dcm import dcm
+import dcm
 from sklearn import datasets
 
 iris = datasets.load_iris()
 X = iris.data
 y = iris.target
 
-index, F1 = dcm.F1(X, y)
+model = dcm.ComplexityProfile()
+model.fit(X, y)
+model.transform()
 ```
 
-### Fraction of Borderline Points (N1)
-```python
-from dcm import dcm
-from sklearn import datasets
-
-bc = datasets.load_breast_cancer(as_frame=True)
-X = bc.data.values
-y = bc.target.values
-
-N1 = dcm.N1(X, y)
-```
-
-### Entropy of Class Proportions (C1) and Imbalance Ratio (C2)
-```python
-from dcm import dcm
-from sklearn import datasets
-
-bc = datasets.load_breast_cancer(as_frame=True)
-X = bc.data.values
-y = bc.target.values
-
-C1, C2 = dcm.C12(X, y)
-```
-
-### Other Measures
-Coming soon...
-
+Complexity profile takes different inputs from none to
+specific measures to be obtained.
 
 ## References
-[1] How Complex is your classification problem? A survey on measuring classification complexity, https://arxiv.org/abs/1808.03591
 
-[2] The Extended Complexity Library (ECoL), https://github.com/lpfgarcia/ECoL
+[1] How Complex is your classification problem? A survey on measuring
+classification complexity, [ArXiv](https://arxiv.org/abs/1808.03591)
+
+[2] The Extended Complexity Library (ECoL),
+[github repo](https://github.com/lpfgarcia/ECoL)
