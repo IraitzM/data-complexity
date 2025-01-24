@@ -12,14 +12,14 @@ from . import utils
 
 
 class ComplexityProfile(BaseEstimator):
-    """_summary_
+    """ComplexityProfile class.
 
     Args:
         BaseEstimator (_type_): _description_
     """
 
     def __init__(self, measures="all"):
-        """Class initialization
+        """Class initialization.
 
         Args:
             measures (str, optional): _description_. Defaults to "all".
@@ -33,7 +33,7 @@ class ComplexityProfile(BaseEstimator):
         self.d = None
 
     def fit(self, x, y):
-        """_summary_
+        """Fitting function.
 
         Args:
             x (_type_): _description_
@@ -91,8 +91,15 @@ class ComplexityProfile(BaseEstimator):
         return result
 
     @staticmethod
-    def ls_measures(measures):
-        """List available measures by group
+    def ls_measures(measures:list[str] | str)->list[str]:
+        """List available measures.
+
+        Args:
+            measures (list[str]|str): List of measures or 
+            family of measures
+
+        Returns:
+            list[str]: Returns the list of available measures
         """
         measure_dict = {
             # Feature based
@@ -129,7 +136,7 @@ class ComplexityProfile(BaseEstimator):
         return self.data[self.data["class"] == j].drop("class", axis=1)
 
     def F1(self):
-        """Maximum Fisher's Discriminant Ratio (F1)
+        """Maximum Fisher's Discriminant Ratio (F1).
 
         Returns:
             float: F1
@@ -184,8 +191,7 @@ class ComplexityProfile(BaseEstimator):
         return 1 / (np.array(f1v) + 1)
 
     def F2(self):
-        """Value of overlapping region
-        """
+        """Value of overlapping region."""
 
         def region_over(data):
             classes = data["class"].unique()

@@ -39,6 +39,7 @@ examples = [
     "seaborn>=0.13.0",
     "ydata-profiling>=4.10.0",
     "setuptools>=75.1.0",
+    "ucimlrepo>=0.0.7",
 ]
 release = [
     "python-semantic-release>=9.16.1",
@@ -47,6 +48,7 @@ release = [
 # Ruff
 [tool.ruff]
 exclude = [".venv","data"]
+line-length = 79
 
 # - https://docs.astral.sh/ruff/rules/
 [tool.ruff.lint]

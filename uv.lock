@@ -263,6 +263,7 @@ examples = [
     { name = "seaborn" },
     { name = "setuptools" },
     { name = "tqdm" },
+    { name = "ucimlrepo" },
     { name = "ydata-profiling" },
 ]
 release = [
@@ -288,6 +289,7 @@ examples = [
     { name = "seaborn", specifier = ">=0.13.0" },
     { name = "setuptools", specifier = ">=75.1.0" },
     { name = "tqdm", specifier = ">=4.66.1" },
+    { name = "ucimlrepo", specifier = ">=0.0.7" },
     { name = "ydata-profiling", specifier = ">=4.10.0" },
 ]
 release = [{ name = "python-semantic-release", specifier = ">=9.16.1" }]
@@ -1505,6 +1507,19 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/43/0f/fa4723f22942480be4ca9527bbde8d43f6c3f2fe8412f00e7f5f6746bc8b/tzdata-2025.1.tar.gz", hash = "sha256:24894909e88cdb28bd1636c6887801df64cb485bd593f2fd83ef29075a81d694", size = 194950 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/0f/dd/84f10e23edd882c6f968c21c2434fe67bd4a528967067515feca9e611e5e/tzdata-2025.1-py2.py3-none-any.whl", hash = "sha256:7e127113816800496f027041c570f50bcd464a020098a3b6b199517772303639", size = 346762 },
+]
+
+[[package]]
+name = "ucimlrepo"
+version = "0.0.7"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "certifi" },
+    { name = "pandas" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/87/7c/f5a400cc99a5365d153609ebf803084f78b4638b0f7925aa31d9abb62b8e/ucimlrepo-0.0.7.tar.gz", hash = "sha256:4cff3f9e814367dd60956da999ace473197237b9fce4c07e9a689e77b4ffb59a", size = 9369 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/3b/07/1252560194df2b4fad1cb3c46081b948331c63eb1bb0b97620d508d12a53/ucimlrepo-0.0.7-py3-none-any.whl", hash = "sha256:0a5ce7e21d7ec850a0da4427c47f9dd96fcc6532f1c7e95dcec63eeb40f08026", size = 8041 },
 ]
 
 [[package]]
