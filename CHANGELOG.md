@@ -1,5 +1,19 @@
 # CHANGELOG
 
+
+## v0.1.1 (2025-01-24)
+
+### Bug Fixes
+
+- **ruff**: Tests passed. 87% coverage.
+  ([`4cfebff`](https://github.com/IraitzM/data-complexity/commit/4cfebff3d31086fc17a85df2a51e4ba02669b0ca))
+
+### Documentation
+
+- **help**: Simple command reminder
+  ([`948b439`](https://github.com/IraitzM/data-complexity/commit/948b439b9a6bf70424e34725e3fb719c7093243c))
+
+
 ## v0.1.0 (2025-01-24)
 
 ### Bug Fixes
