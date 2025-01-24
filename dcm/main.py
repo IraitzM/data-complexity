@@ -1,3 +1,4 @@
+"""Main entrypoint for data complexity module."""
 import networkx as nx
 import numpy as np
 import pandas as pd
@@ -22,7 +23,8 @@ class ComplexityProfile(BaseEstimator):
         """Class initialization.
 
         Args:
-            measures (str, optional): _description_. Defaults to "all".
+            measures (str, optional): Measures to be computed.
+                Defaults to "all".
         """
         # Select measures
         self.measures = self.ls_measures(measures)
@@ -32,17 +34,23 @@ class ComplexityProfile(BaseEstimator):
         self.y = None
         self.d = None
 
-    def fit(self, x, y):
+        # Extra
+        self.data = None
+        self.dst = None
+        self.dst_matrix = None
+
+    def fit(self, x:pd.DataFrame, y:pd.DataFrame):
         """Fitting function.
 
         Args:
-            x (_type_): _description_
-            y (_type_): _description_
+            x (pd.DataFrame): Features
+            y (pd.DataFrame): Target
 
         Raises:
-            ValueError: _description_
-            ValueError: _description_
-            ValueError: _description_
+            ValueError: Number of examples in the minority 
+                class should be >= 2.
+            ValueError: Label attribute needs to be numeric.
+            ValueError: x and y must have same number of rows.
         """
         if not isinstance(x, pd.DataFrame):
             x = pd.DataFrame(x)
@@ -51,8 +59,10 @@ class ComplexityProfile(BaseEstimator):
             y = y.iloc[:, 0]
 
         y = pd.Series(y)
-        if y.value_counts().min() < 2:
-            raise ValueError("Number of examples in the minority class should be >= 2")
+        if y.value_counts().min() < 2:  # noqa: PLR2004
+            raise ValueError(
+                "Number of examples in the minority class should be >= 2"
+            )
 
         if isinstance(y, pd.Categorical):
             raise ValueError("label attribute needs to be numeric")
@@ -75,15 +85,21 @@ class ComplexityProfile(BaseEstimator):
 
         self.d = squareform(pdist(x))
 
-    def summarization(self, measure):
-        return float(np.mean(measure))
+    def transform(self, return_type: str = "dict") -> dict | pd.DataFrame:
+        """Main function that returns the required metrics.
 
-    def transform(self, return_type: str = "dict"):
+        Args:
+            return_type (str, optional): How to produce the output information.
+                Defaults to "dict".
+
+        Returns:
+            dict | pd.DataFrame: Metric structures
+        """
         result = {}
         for measure in self.measures:
             method = getattr(self, f"{measure}")
             measure_result = method()
-            result[measure] = self.summarization(measure_result)
+            result[measure] = float(np.mean(measure_result))
 
         if return_type == "df":
             return pd.DataFrame.from_records([result])
@@ -91,11 +107,11 @@ class ComplexityProfile(BaseEstimator):
         return result
 
     @staticmethod
-    def ls_measures(measures:list[str] | str)->list[str]:
+    def ls_measures(measures: list[str] | str) -> list[str]:
         """List available measures.
 
         Args:
-            measures (list[str]|str): List of measures or 
+            measures (list[str]|str): List of measures or
             family of measures
 
         Returns:
@@ -132,7 +148,15 @@ class ComplexityProfile(BaseEstimator):
         return all_measures
 
     # Feature based
-    def branch(self, j):
+    def branch(self, j:int) -> pd.DataFrame:
+        """Check the data for a given class.
+
+        Args:
+            j (int): Class identifier
+
+        Returns:
+            DataFrame: Rows for a given class
+        """
         return self.data[self.data["class"] == j].drop("class", axis=1)
 
     def F1(self):
@@ -141,12 +165,13 @@ class ComplexityProfile(BaseEstimator):
         Returns:
             float: F1
         """
-        X = self.data.drop("class", axis=1)
-        overall_mean = X.mean()
+        features = self.data.drop("class", axis=1)
+        overall_mean = features.mean()
 
         # Numerator
         numerator = sum(
-            len(self.branch(clss)) * (self.branch(clss).mean() - overall_mean) ** 2
+            len(self.branch(clss))
+            * (self.branch(clss).mean() - overall_mean) ** 2
             for clss in self.data["class"].unique()
         )
 
@@ -180,11 +205,11 @@ class ComplexityProfile(BaseEstimator):
             c1 = a.mean()
             c2 = b.mean()
 
-            W = (len(a) / len(data)) * a.cov() + (len(b) / len(data)) * b.cov()
-            B = np.outer(c1 - c2, c1 - c2)
-            d = np.linalg.pinv(W) @ (c1 - c2)
+            w = (len(a) / len(data)) * a.cov() + (len(b) / len(data)) * b.cov()
+            b2 = np.outer(c1 - c2, c1 - c2)
+            d = np.linalg.pinv(w) @ (c1 - c2)
 
-            return (d.T @ B @ d) / (d.T @ W @ d)
+            return (d.T @ b2 @ d) / (d.T @ w @ d)
 
         ovo_data = utils.ovo(self.data)
         f1v = [dvector(data) for data in ovo_data]
@@ -232,11 +257,17 @@ class ComplexityProfile(BaseEstimator):
         def removing(data):
             while True:
                 non_overlap = (
-                    (data.drop("class", axis=1) < data.drop("class", axis=1).min())
-                    | (data.drop("class", axis=1) > data.drop("class", axis=1).max())
+                    (
+                        data.drop("class", axis=1)
+                        < data.drop("class", axis=1).min()
+                    )
+                    | (
+                        data.drop("class", axis=1)
+                        > data.drop("class", axis=1).max()
+                    )
                 ).sum()
                 col = non_overlap.idxmax()
-                data = data[data[col] == False].drop(col, axis=1)
+                data = data[data[col] == False].drop(col, axis=1)  # noqa: E712
 
                 if (
                     len(data) == 0
@@ -301,7 +332,7 @@ class ComplexityProfile(BaseEstimator):
         n = len(self.x)
 
         tmp = pd.DataFrame([self.r_interpolation(i) for i in range(1, n)])
-        tmp.columns = list(self.x.columns) + ["y"]
+        tmp.columns = [*list(self.x.columns), "y"]
         return tmp
 
     # Correlation
@@ -328,28 +359,29 @@ class ComplexityProfile(BaseEstimator):
             sumation += v / (n - v)
             nc += 1
 
-        IR = (nc - 1) / nc * sumation
-        return 1 - 1 / IR
+        ir = (nc - 1) / nc * sumation
+        return 1 - 1 / ir
 
     # Linearity
-    def L1(self):
-        """Sum of error distance by linear programming
+    def L1(self) -> float:
+        """Sum of error distance by linear programming.
 
         Returns:
-            float: L1
+            float: L1 metric
         """
-        X = self.data.drop("class", axis=1)
         ovo_data = utils.ovo(self.data)
 
         error_dist = []
         for data in ovo_data:
-            X = data.drop("class", axis=1)
-            y = data["class"]
+            features = data.drop("class", axis=1)
+            target = data["class"]
 
             clf = svm.SVC(kernel="linear")
-            clf.fit(X, y)
+            clf.fit(features, target)
 
-            error_dist.append(sum(clf.predict(X) != y) / len(y))
+            error_dist.append(
+                sum(clf.predict(features) != target) / len(target)
+            )
 
         return 1 - (1 / (1 + sum(error_dist)))
 
@@ -361,30 +393,43 @@ class ComplexityProfile(BaseEstimator):
 
     # Neighborhood
     def N1(self):
-        G = nx.Graph(self.dst_matrix)
-        mst = nx.minimum_spanning_tree(G)
+        graph = nx.Graph(self.dst_matrix)
+        mst = nx.minimum_spanning_tree(graph)
         edges = list(mst.edges())
         different_class = sum(
-            self.data.iloc[u]["class"] != self.data.iloc[v]["class"] for u, v in edges
+            self.data.iloc[u]["class"] != self.data.iloc[v]["class"]
+            for u, v in edges
         )
         return different_class / self.data.shape[0]
 
     def intra(self, i):
-        same_class = self.data[self.data["class"] == self.data.iloc[i]["class"]].index
+        same_class = self.data[
+            self.data["class"] == self.data.iloc[i]["class"]
+        ].index
         return np.min(self.dst_matrix[i, list(set(same_class) - {i})])
 
     def inter(self, i):
-        diff_class = self.data[self.data["class"] != self.data.iloc[i]["class"]].index
+        diff_class = self.data[
+            self.data["class"] != self.data.iloc[i]["class"]
+        ].index
         return np.min(self.dst_matrix[i, diff_class])
 
     def N2(self):
-        intra_distances = np.array([self.intra(i) for i in range(self.data.shape[0])])
-        inter_distances = np.array([self.inter(i) for i in range(self.data.shape[0])])
+        intra_distances = np.array(
+            [self.intra(i) for i in range(self.data.shape[0])]
+        )
+        inter_distances = np.array(
+            [self.inter(i) for i in range(self.data.shape[0])]
+        )
         return 1 - (1 / ((intra_distances / inter_distances) + 1))
 
     def knn(self, k):
-        indices = np.argsort(self.dst_matrix, axis=1)[:, 1 : k + 1]  # exclude self
-        return np.array([self.data.iloc[idx]["class"].mode()[0] for idx in indices])
+        indices = np.argsort(self.dst_matrix, axis=1)[
+            :, 1 : k + 1
+        ]  # exclude self
+        return np.array(
+            [self.data.iloc[idx]["class"].mode()[0] for idx in indices]
+        )
 
     def N3(self):
         knn_classes = self.knn(2)
@@ -395,18 +440,24 @@ class ComplexityProfile(BaseEstimator):
         for _ in range(n):
             sample = self.data.sample(n=1)
             new_instance = sample.iloc[0].copy()
-            new_instance["class"] = np.random.choice(self.data["class"].unique())
+            new_instance["class"] = np.random.choice(
+                self.data["class"].unique()
+            )
             new_data.append(new_instance)
         return pd.DataFrame(new_data)
 
     def N4(self):
         generated_data = self.c_generate(self.data.shape[0])
-        combined_data = pd.concat([self.data, generated_data], ignore_index=True)
+        combined_data = pd.concat(
+            [self.data, generated_data], ignore_index=True
+        )
 
         combined_dst = pdist(combined_data.drop("class", axis=1))
         combined_dst_matrix = squareform(combined_dst)
 
-        test_dst = combined_dst_matrix[self.data.shape[0] :, : self.data.shape[0]]
+        test_dst = combined_dst_matrix[
+            self.data.shape[0] :, : self.data.shape[0]
+        ]
 
         knn_classes = np.array(
             [self.data.iloc[np.argmin(dist)]["class"] for dist in test_dst]
@@ -417,14 +468,20 @@ class ComplexityProfile(BaseEstimator):
         di = self.inter(i)
         j = np.argmin(
             self.dst_matrix[
-                i, self.data[self.data["class"] != self.data.iloc[i]["class"]].index
+                i,
+                self.data[
+                    self.data["class"] != self.data.iloc[i]["class"]
+                ].index,
             ]
         )
 
         _ = self.inter(j)
         k = np.argmin(
             self.dst_matrix[
-                j, self.data[self.data["class"] != self.data.iloc[j]["class"]].index
+                j,
+                self.data[
+                    self.data["class"] != self.data.iloc[j]["class"]
+                ].index,
             ]
         )
 
@@ -475,11 +532,14 @@ class ComplexityProfile(BaseEstimator):
         raise NotImplementedError
 
     # Balance
-    def B1(self):
-        """Class balance
+
+    def B1(self) -> float:
+        """Class balance.
+
+        Value of the entropy associated with the label.
 
         Returns:
-            float: Value of the entropy associated with the label
+            float: B1 metric.
         """
         c = -1 / np.log(self.y.nunique())
         i = self.y.value_counts(normalize=True)
@@ -493,12 +553,18 @@ class ComplexityProfile(BaseEstimator):
 
     # Dimension
     def pca_variance(self):
-        """Python equivalent of R's pca function."""
+        """PCA variance aggregator.
+        
+        It gets the number of
+        components to those representing 95% of
+        the variance.
+        """
         pca = PCA()
         pca.fit(self.x)
         cumsum = np.cumsum(pca.explained_variance_ratio_)
+
         # Find number of components needed for 95% variance
-        n_components = np.argmax(cumsum >= 0.95) + 1
+        n_components = np.argmax(cumsum >= 0.95) + 1  # noqa: PLR2004
         return n_components
 
     def T2(self):

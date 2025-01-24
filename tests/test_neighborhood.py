@@ -1,5 +1,4 @@
-"""Filename: test_neighborhood.py
-"""
+"""Filename: test_neighborhood.py."""
 
 import unittest
 
@@ -10,15 +9,18 @@ from dcm import ComplexityProfile
 
 
 class TestNeighborhood(unittest.TestCase):
+    """Test neighborhood metrics."""
     def setUp(self):
-        X, y = load_iris(return_X_y=True)
+        """Setup."""
+        features, target = load_iris(return_X_y=True)
 
-        self.X = X
-        self.y = y
+        self.features = features
+        self.target = target
 
     def test_iris(self):
+        """Test using the Iris dataset."""
         model = ComplexityProfile()
-        model.fit(self.X, self.y)
+        model.fit(self.features, self.target)
 
         numpy.testing.assert_allclose(model.N1(), 0.053333, atol=1e-06)
         numpy.testing.assert_allclose(model.N3(), 0.053333, atol=1e-06)
@@ -27,8 +29,9 @@ class TestNeighborhood(unittest.TestCase):
         numpy.testing.assert_allclose(model.N6(), 0.804356, atol=1e-06)
 
     def test_iris_100(self):
+        """Test using the first 100 rows of the Iris dataset."""
         model = ComplexityProfile()
-        model.fit(self.X[:100], self.y[:100])
+        model.fit(self.features[:100], self.target[:100])
 
         numpy.testing.assert_allclose(model.N1(), 0.01, atol=0)
         numpy.testing.assert_allclose(model.N3(), 0.0, atol=1e-06)
@@ -38,15 +41,18 @@ class TestNeighborhood(unittest.TestCase):
 
 
 class TestNeighborhood2(unittest.TestCase):
+    """Test neighborhood metrics."""
     def setUp(self):
-        X, y = load_breast_cancer(return_X_y=True)
+        """Setup."""
+        features, target = load_breast_cancer(return_X_y=True)
 
-        self.X = X
-        self.y = y
+        self.features = features
+        self.target = target
 
     def test_cancer(self):
+        """Test using cancer dataset."""
         model = ComplexityProfile()
-        model.fit(self.X, self.y)
+        model.fit(self.features, self.target)
 
         numpy.testing.assert_allclose(model.N1(), 0.086116, atol=1e-06)
         numpy.testing.assert_allclose(model.N3(), 0.091388, atol=1e-06)
@@ -55,8 +61,9 @@ class TestNeighborhood2(unittest.TestCase):
         numpy.testing.assert_allclose(model.N6(), 0.912293, atol=1e-06)
 
     def test_cancer_100(self):
+        """Test with first 100 rows of cancer dataset."""
         model = ComplexityProfile()
-        model.fit(self.X[:100], self.y[:100])
+        model.fit(self.features[:100], self.target[:100])
 
         numpy.testing.assert_allclose(model.N1(), 0.1, atol=0)
         numpy.testing.assert_allclose(model.N3(), 0.08, atol=1e-06)

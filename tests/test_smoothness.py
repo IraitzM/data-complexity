@@ -1,5 +1,4 @@
-"""Filename: test_smoothness.py
-"""
+"""Filename: test_smoothness.py."""
 
 import unittest
 
@@ -10,17 +9,20 @@ from dcm import ComplexityProfile
 
 
 class TestSmoothness(unittest.TestCase):
+    """Test smoothness."""
     def setUp(self):
-        X, y = load_iris(return_X_y=True)
+        """Setup."""
+        features, target = load_iris(return_X_y=True)
 
-        self.X = X
-        self.y = y
+        self.features = features
+        self.target = target
 
         self.measures = ["S1", "S2", "S3", "S4"]
 
     def test_iris(self):
+        """Test using the Iris dataset."""
         model = ComplexityProfile(self.measures)
-        model.fit(self.X, self.y)
+        model.fit(self.features, self.target)
 
         result = model.transform()
 
@@ -29,8 +31,9 @@ class TestSmoothness(unittest.TestCase):
         numpy.testing.assert_allclose(result["S3"], 0.031914, atol=1e-4)
 
     def test_iris_100(self):
+        """Test using the first 100 rows of the Iris dataset."""
         model = ComplexityProfile(self.measures)
-        model.fit(self.X[:100], self.y[:100])
+        model.fit(self.features[:100], self.target[:100])
 
         result = model.transform()
 
@@ -40,17 +43,20 @@ class TestSmoothness(unittest.TestCase):
 
 
 class TestSmoothness2(unittest.TestCase):
+    """Test smoothness metrics."""
     def setUp(self):
-        X, y = load_breast_cancer(return_X_y=True)
+        """Setup."""
+        features, target = load_breast_cancer(return_X_y=True)
 
-        self.X = X
-        self.y = y
+        self.features = features
+        self.target = target
 
         self.measures = ["S1", "S2", "S3"]
 
     def test_cancer(self):
+        """Test using cancer dataset."""
         model = ComplexityProfile(self.measures)
-        model.fit(self.X, self.y)
+        model.fit(self.features, self.target)
 
         result = model.transform()
 
@@ -59,8 +65,9 @@ class TestSmoothness2(unittest.TestCase):
         numpy.testing.assert_allclose(result["S3"], 0.356, atol=1e-4)
 
     def test_cancer_100(self):
+        """Test with first 100 rows of cancer dataset."""
         model = ComplexityProfile(self.measures)
-        model.fit(self.X[:100], self.y[:100])
+        model.fit(self.features[:100], self.target[:100])
 
         result = model.transform()
 
