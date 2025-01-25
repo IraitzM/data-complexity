@@ -1,4 +1,4 @@
-[![SQAaaS badge shields.io](https://img.shields.io/badge/sqaaas%20software-bronze-e6ae77)](https://api.eu.badgr.io/public/assertions/zd_rA4XiTIqVnss6UlVj-Q "SQAaaS bronze badge achieved")
+[![SQAaaS badge shields.io](https://img.shields.io/badge/sqaaas%20software-silver-lightgrey)](https://api.eu.badgr.io/public/assertions/wDjlh5P2RD-E5MYtV65Znw "SQAaaS silver badge achieved")
 
 # Data Complexity
 
