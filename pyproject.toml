@@ -42,12 +42,13 @@ examples = [
     "ucimlrepo>=0.0.7",
 ]
 release = [
+    "pre-commit>=4.1.0",
     "python-semantic-release>=9.16.1",
 ]
 
 # Ruff
 [tool.ruff]
-exclude = [".venv","data"]
+exclude = [".venv","data", "examples"]
 line-length = 79
 
 # - https://docs.astral.sh/ruff/rules/
@@ -131,4 +132,3 @@ insecure = false
 [tool.semantic_release.publish]
 dist_glob_patterns = ["dist/*"]
 upload_to_vcs_release = true
-
