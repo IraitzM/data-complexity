@@ -10,6 +10,7 @@ from dcm import ComplexityProfile
 
 class TestFeatures(unittest.TestCase):
     """Test feature-base metrics."""
+
     def setUp(self):
         """Setup."""
         features, target = load_iris(return_X_y=True)
@@ -36,6 +37,7 @@ class TestFeatures(unittest.TestCase):
 
 class TestFeatures2(unittest.TestCase):
     """Test feature based metrics."""
+
     def setUp(self):
         """Setup."""
         features, target = load_breast_cancer(return_X_y=True)

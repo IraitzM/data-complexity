@@ -10,6 +10,7 @@ from dcm import ComplexityProfile
 
 class TestSmoothness(unittest.TestCase):
     """Test smoothness."""
+
     def setUp(self):
         """Setup."""
         features, target = load_iris(return_X_y=True)
@@ -44,6 +45,7 @@ class TestSmoothness(unittest.TestCase):
 
 class TestSmoothness2(unittest.TestCase):
     """Test smoothness metrics."""
+
     def setUp(self):
         """Setup."""
         features, target = load_breast_cancer(return_X_y=True)

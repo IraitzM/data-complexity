@@ -10,6 +10,7 @@ from dcm import ComplexityProfile
 
 class TestLinearity(unittest.TestCase):
     """Test linearity metrics."""
+
     def setUp(self):
         """Setup."""
         features, target = load_iris(return_X_y=True)
@@ -34,6 +35,7 @@ class TestLinearity(unittest.TestCase):
 
 class TestLinearity2(unittest.TestCase):
     """Test linearity metrics."""
+
     def setUp(self):
         """Setup."""
         features, target = load_breast_cancer(return_X_y=True)

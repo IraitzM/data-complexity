@@ -10,6 +10,7 @@ from dcm import ComplexityProfile
 
 class TestNeighborhood(unittest.TestCase):
     """Test neighborhood metrics."""
+
     def setUp(self):
         """Setup."""
         features, target = load_iris(return_X_y=True)
@@ -42,6 +43,7 @@ class TestNeighborhood(unittest.TestCase):
 
 class TestNeighborhood2(unittest.TestCase):
     """Test neighborhood metrics."""
+
     def setUp(self):
         """Setup."""
         features, target = load_breast_cancer(return_X_y=True)

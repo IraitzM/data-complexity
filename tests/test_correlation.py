@@ -10,6 +10,7 @@ from dcm import ComplexityProfile
 
 class TestCorrelation(unittest.TestCase):
     """Test correlation metrics."""
+
     def setUp(self):
         """Setup."""
         features, target = load_iris(return_X_y=True)
@@ -36,6 +37,7 @@ class TestCorrelation(unittest.TestCase):
 
 class TestCorrelation2(unittest.TestCase):
     """Test correlation metrics."""
+
     def setUp(self):
         """Setup."""
         features, target = load_breast_cancer(return_X_y=True)

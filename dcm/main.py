@@ -1,4 +1,5 @@
 """Main entrypoint for data complexity module."""
+
 import networkx as nx
 import numpy as np
 import pandas as pd
@@ -39,7 +40,7 @@ class ComplexityProfile(BaseEstimator):
         self.dst = None
         self.dst_matrix = None
 
-    def fit(self, x:pd.DataFrame, y:pd.DataFrame):
+    def fit(self, x: pd.DataFrame, y: pd.DataFrame):
         """Fitting function.
 
         Args:
@@ -47,7 +48,7 @@ class ComplexityProfile(BaseEstimator):
             y (pd.DataFrame): Target
 
         Raises:
-            ValueError: Number of examples in the minority 
+            ValueError: Number of examples in the minority
                 class should be >= 2.
             ValueError: Label attribute needs to be numeric.
             ValueError: x and y must have same number of rows.
@@ -148,7 +149,7 @@ class ComplexityProfile(BaseEstimator):
         return all_measures
 
     # Feature based
-    def branch(self, j:int) -> pd.DataFrame:
+    def branch(self, j: int) -> pd.DataFrame:
         """Check the data for a given class.
 
         Args:
@@ -554,7 +555,7 @@ class ComplexityProfile(BaseEstimator):
     # Dimension
     def pca_variance(self):
         """PCA variance aggregator.
-        
+
         It gets the number of
         components to those representing 95% of
         the variance.

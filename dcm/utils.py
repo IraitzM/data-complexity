@@ -8,7 +8,7 @@ import seaborn as sns
 from sklearn.preprocessing import OneHotEncoder
 
 
-def plot_profile(profile_json:dict):
+def plot_profile(profile_json: dict):
     """Plots the barplot with the complexity measures.
 
     Args:
@@ -56,7 +56,7 @@ def normalize(df: pd.DataFrame):
     return (df - df.mean()) / df.std()
 
 
-def binarize(data:pd.DataFrame):
+def binarize(data: pd.DataFrame):
     """Creates a binarized version for the given dataset.
 
     Args:
@@ -75,7 +75,6 @@ def binarize(data:pd.DataFrame):
             encoded, columns=enc.get_feature_names_out(categorical_cols)
         )
         data = pd.concat(
-            [data.drop(columns=categorical_cols), encoded_df],
-            axis=1
+            [data.drop(columns=categorical_cols), encoded_df], axis=1
         )
     return data
