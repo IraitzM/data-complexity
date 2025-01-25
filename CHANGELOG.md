@@ -1,20 +1,7 @@
 # CHANGELOG
 
 
-## v0.1.1 (2025-01-24)
-
-### Bug Fixes
-
-- **ruff**: Tests passed. 87% coverage.
-  ([`4cfebff`](https://github.com/IraitzM/data-complexity/commit/4cfebff3d31086fc17a85df2a51e4ba02669b0ca))
-
-### Documentation
-
-- **help**: Simple command reminder
-  ([`948b439`](https://github.com/IraitzM/data-complexity/commit/948b439b9a6bf70424e34725e3fb719c7093243c))
-
-
-## v0.1.0 (2025-01-24)
+## v0.1.0 (2025-01-25)
 
 ### Bug Fixes
 
@@ -24,11 +11,17 @@
 - **code**: Updated measures and format with respect to the original work
   ([`2277110`](https://github.com/IraitzM/data-complexity/commit/22771103a7914938dec10f04f10722edac3aedc0))
 
+- **format**: Ruff formatting
+  ([`493a934`](https://github.com/IraitzM/data-complexity/commit/493a934a43882706962396feefa950787e0b976e))
+
 - **lint**: Using Ruff and manual for md
   ([`48b5685`](https://github.com/IraitzM/data-complexity/commit/48b5685a54635bdb86878c743393f9c5672a11e2))
 
 - **quality**: Data quality checks
   ([`6d4bd53`](https://github.com/IraitzM/data-complexity/commit/6d4bd53675588568c72d32b39696bca2b2a85d1c))
+
+- **ruff**: Tests passed. 87% coverage.
+  ([`4cfebff`](https://github.com/IraitzM/data-complexity/commit/4cfebff3d31086fc17a85df2a51e4ba02669b0ca))
 
 - **semver**: Added semantic release dependency plus correct badge
   ([`5556bd0`](https://github.com/IraitzM/data-complexity/commit/5556bd095c00a1962f840ec333462cf51aa5106d))
@@ -41,7 +34,15 @@
 - **readme**: Updated readme for the current version
   ([`d8de179`](https://github.com/IraitzM/data-complexity/commit/d8de179b9c7569e48ea97b9f669817e01039d951))
 
+### Documentation
+
+- **help**: Simple command reminder
+  ([`948b439`](https://github.com/IraitzM/data-complexity/commit/948b439b9a6bf70424e34725e3fb719c7093243c))
+
 ### Features
+
+- **citing**: Added citing info.
+  ([`36abb4e`](https://github.com/IraitzM/data-complexity/commit/36abb4eb57741d02ce5aa94c0e215172961a84c8))
 
 - **data**: Data generator removes and fixed datasets. Dimensionality features added.
   ([`336bd71`](https://github.com/IraitzM/data-complexity/commit/336bd717f1adedd14829419e55553c8794d05849))
