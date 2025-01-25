@@ -317,9 +317,7 @@ class ComplexityProfile(BaseEstimator):
         rnd = np.random.uniform()
         for j in range(len(self.x.columns)):
             if np.issubdtype(self.x.iloc[:, j].dtype, np.number):
-                aux.iloc[0, j] = (
-                    aux.iloc[0, j] + (aux.iloc[1, j] - aux.iloc[0, j]) * rnd
-                )
+                aux.iloc[0, j] += (aux.iloc[1, j] - aux.iloc[0, j]) * rnd
             else:
                 aux.iloc[0, j] = np.random.choice(aux.iloc[:, j])
 
@@ -497,28 +495,10 @@ class ComplexityProfile(BaseEstimator):
     def translate(self, r):
         return self.dst_matrix < r[:, np.newaxis]
 
-    def adherence(self, adh):
-        n = []
-        h = []
-        while adh.shape[0] > 0:
-            aux = np.argmax(np.sum(adh, axis=1))
-            tmp = np.where(adh[aux])[0]
-            dif = np.setdiff1d(np.arange(adh.shape[0]), np.append(tmp, aux))
-            adh = adh[dif][:, dif]
-
-            if adh.shape[0] > 0:
-                h.append(len(tmp))
-            else:
-                h.append(1)
-
-            n.append(aux)
-
-        return h, n
-
     def N5(self):
         r = self.hypersphere()
         adh = self.translate(r)
-        h, _ = self.adherence(adh)
+        h, _ = utils.adherence(adh)
         return len(h) / self.data.shape[0]
 
     def N6(self):

@@ -3,6 +3,7 @@
 from itertools import combinations
 
 import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 import seaborn as sns
 from sklearn.preprocessing import OneHotEncoder
@@ -54,6 +55,33 @@ def normalize(df: pd.DataFrame):
         pd.DataFrame: Normalizar dataset
     """
     return (df - df.mean()) / df.std()
+
+
+def adherence(adh):
+    """_summary_.
+
+    Args:
+        adh (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
+    n = []
+    h = []
+    while adh.shape[0] > 0:
+        aux = np.argmax(np.sum(adh, axis=1))
+        tmp = np.where(adh[aux])[0]
+        dif = np.setdiff1d(np.arange(adh.shape[0]), np.append(tmp, aux))
+        adh = adh[dif][:, dif]
+
+        if adh.shape[0] > 0:
+            h.append(len(tmp))
+        else:
+            h.append(1)
+
+        n.append(aux)
+
+    return h, n
 
 
 def binarize(data: pd.DataFrame):
