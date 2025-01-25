@@ -1,5 +1,5 @@
-import os
-
-__DEBUG__ = os.environ.get("DCM_DEBUG", 0)
+"""Init for structure importing."""
 
 from .main import ComplexityProfile
+
+__all__ = ["ComplexityProfile"]

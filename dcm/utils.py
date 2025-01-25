@@ -1,16 +1,19 @@
+"""Utils and functions to be used by many metrics in main."""
+
 from itertools import combinations
 
 import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 import seaborn as sns
 from sklearn.preprocessing import OneHotEncoder
 
 
-def plot_profile(profile_json):
-    """Plots the barplot with the complexity measures
+def plot_profile(profile_json: dict):
+    """Plots the barplot with the complexity measures.
 
     Args:
-        profile_json (_type_): _description_
+        profile_json (dict): Metrics and values.
     """
     sns.set_theme(style="whitegrid")
 
@@ -28,7 +31,7 @@ def plot_profile(profile_json):
 
 
 def ovo(data):
-    """One-vs-one takes the data in pairs
+    """One-vs-one takes the data in pairs.
 
     Args:
         data (DataFrame): Data with class column informed
@@ -42,32 +45,8 @@ def ovo(data):
     ]
 
 
-def colMax(df: pd.DataFrame):
-    """Max of a column
-
-    Args:
-        df (_type_): _description_
-
-    Returns:
-        _type_: _description_
-    """
-    return df.max()
-
-
-def colMin(df: pd.DataFrame):
-    """Min of a column
-
-    Args:
-        df (_type_): _description_
-
-    Returns:
-        _type_: _description_
-    """
-    return df.min()
-
-
 def normalize(df: pd.DataFrame):
-    """Normalization of data
+    """Normalization of data.
 
     Args:
         df (pd.DataFrame): Dataframe, all numeric.
@@ -78,21 +57,52 @@ def normalize(df: pd.DataFrame):
     return (df - df.mean()) / df.std()
 
 
-def binarize(X):
-    """_summary_
+def adherence(adh):
+    """_summary_.
 
     Args:
-        X (_type_): _description_
+        adh (_type_): _description_
 
     Returns:
         _type_: _description_
     """
-    categorical_cols = X.select_dtypes(include=["object", "category"]).columns
+    n = []
+    h = []
+    while adh.shape[0] > 0:
+        aux = np.argmax(np.sum(adh, axis=1))
+        tmp = np.where(adh[aux])[0]
+        dif = np.setdiff1d(np.arange(adh.shape[0]), np.append(tmp, aux))
+        adh = adh[dif][:, dif]
+
+        if adh.shape[0] > 0:
+            h.append(len(tmp))
+        else:
+            h.append(1)
+
+        n.append(aux)
+
+    return h, n
+
+
+def binarize(data: pd.DataFrame):
+    """Creates a binarized version for the given dataset.
+
+    Args:
+        data (pd.DataFrame): Dataset to be binarized
+
+    Returns:
+        DataFrame: _description_
+    """
+    categorical_cols = data.select_dtypes(
+        include=["object", "category"]
+    ).columns
     if not categorical_cols.empty:
         enc = OneHotEncoder(handle_unknown="ignore")
-        encoded = enc.fit_transform(X[categorical_cols])
+        encoded = enc.fit_transform(data[categorical_cols])
         encoded_df = pd.DataFrame(
             encoded, columns=enc.get_feature_names_out(categorical_cols)
         )
-        X = pd.concat([X.drop(columns=categorical_cols), encoded_df], axis=1)
-    return X
+        data = pd.concat(
+            [data.drop(columns=categorical_cols), encoded_df], axis=1
+        )
+    return data
