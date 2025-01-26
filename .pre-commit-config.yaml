@@ -22,6 +22,16 @@ repos:
         args: [ --fix, --preview ]
         # Run the formatter.
     -   id: ruff-format
+-   repo: https://github.com/astral-sh/uv-pre-commit
+    # uv version.
+    rev: 0.5.24
+    hooks:
+      - id: uv-lock
+-   repo: https://github.com/astral-sh/uv-pre-commit
+    # uv version.
+    rev: 0.5.24
+    hooks:
+      - id: uv-export
 
 # Dependency failure
 # -   repo: https://github.com/jackdewinter/pymarkdown
