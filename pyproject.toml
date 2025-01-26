@@ -10,7 +10,7 @@ dependencies = [
     "gower>=0.1.2",
     "networkx>=3.2.1",
 ]
-requires-python = ">=3.9, <3.11"
+requires-python = ">=3.9, <3.12"
 readme = "README.md"
 license = {text = "MIT"}
 dynamic = ["version"]
@@ -19,16 +19,10 @@ dynamic = ["version"]
 requires = ["pdm-backend"]
 build-backend = "pdm.backend"
 
-[tool.pdm.build]
-includes = ["dcm/"]
-
-[tool.pdm.version]
-source = "file"
-path = "dcm/__version__.py"
-
 [dependency-groups]
 tests = [
     "nose2[coverage_plugin]>=0.15.1",
+    "tox-pdm>=0.7.2",
 ]
 examples = [
     "pandas>=2.1.1",
@@ -131,3 +125,10 @@ insecure = false
 [tool.semantic_release.publish]
 dist_glob_patterns = ["dist/*"]
 upload_to_vcs_release = true
+
+[tool.pdm.build]
+includes = ["dcm/"]
+
+[tool.pdm.version]
+source = "file"
+path = "dcm/__version__.py"

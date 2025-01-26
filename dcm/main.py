@@ -550,11 +550,11 @@ class ComplexityProfile(BaseEstimator):
 
     def T2(self):
         """Ratio of number of features to number of instances."""
-        return self.x.shape[1] / self.x.shape[0]
+        return float(self.x.shape[1]) / float(self.x.shape[0])
 
     def T3(self):
         """Ratio of PCA components to number of instances."""
-        return self.pca_variance() / self.x.shape[0]
+        return self.pca_variance() / float(self.x.shape[0])
 
     def T4(self):
         """Ratio of PCA components to number of features."""

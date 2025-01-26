@@ -22,3 +22,9 @@ repos:
         args: [ --fix, --preview ]
         # Run the formatter.
     -   id: ruff-format
+
+# Dependency failure
+# -   repo: https://github.com/jackdewinter/pymarkdown
+#    rev: main
+#    hooks:
+#    -   id: pymarkdown

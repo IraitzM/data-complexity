@@ -1,4 +1,5 @@
-[![SQAaaS badge shields.io](https://img.shields.io/badge/sqaaas%20software-silver-lightgrey)](https://api.eu.badgr.io/public/assertions/LkZ4Pc-7S3OaPW8U612VTw "SQAaaS silver badge achieved")
+[![SQAaaS badge shields.io](https://github.com/EOSC-synergy/IraitzM/data-complexity.assess.sqaaas/raw/master/.badge/status_shields.svg)](https://sqaaas.eosc-synergy.eu/#/full-assessment/report/https://raw.githubusercontent.com/eosc-synergy/IraitzM/data-complexity.assess.sqaaas/master/.report/assessment_output.json)
+
 
 # Data Complexity
 
