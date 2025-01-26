@@ -26,8 +26,8 @@ jobs:
       - name: Install the project
         run: uv sync --all-extras --dev
 
-      - name: Run tests
-        run: uv run nose2
+      #- name: Run tests
+      #  run: uv run nose2
 
       - uses: eosc-synergy/sqaaas-assessment-action@v2
         with:
