@@ -23,6 +23,7 @@ build-backend = "pdm.backend"
 tests = [
     "nose2[coverage_plugin]>=0.15.1",
     "tox-pdm>=0.7.2",
+    "coverage>=7.6.10",
 ]
 examples = [
     "pandas>=2.1.1",
