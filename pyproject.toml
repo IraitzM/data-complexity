@@ -10,7 +10,7 @@ dependencies = [
     "gower>=0.1.2",
     "networkx>=3.2.1",
 ]
-requires-python = ">=3.9, <3.12"
+requires-python = ">=3.10, <3.13"
 readme = "README.md"
 license = {text = "MIT"}
 dynamic = ["version"]
