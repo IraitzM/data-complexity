@@ -29,6 +29,3 @@ jobs:
       #  run: uv run nose2
 
       - uses: eosc-synergy/sqaaas-assessment-action@v2
-        with:
-          repo: 'https://github.com/${{ github.repository }}'
-          branch: 'master'
