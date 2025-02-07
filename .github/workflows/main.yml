@@ -24,7 +24,7 @@ jobs:
 
         # You are now able to use PDM in your workflow
       - name: Install dependencies
-        run: pdm sync
+        run: pdm install
 
       - name: Check coverage
         run: pdm run coverage run -m nose2
