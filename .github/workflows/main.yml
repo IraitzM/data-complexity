@@ -17,15 +17,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install uv and set the python version
-        uses: astral-sh/setup-uv@v5
+      - name: Setup PDM
+        uses: pdm-project/setup-pdm@v4
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Install the project
-        run: uv sync --all-extras --dev
+        # You are now able to use PDM in your workflow
+      - name: Install dependencies
+        run: pdm sync
 
-      - name: Run tests
-        run: uv run coverage run -m nose2
+      - name: Check coverage
+        run: pdm run coverage run -m nose2
 
       - uses: eosc-synergy/sqaaas-assessment-action@v2

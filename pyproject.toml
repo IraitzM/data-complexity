@@ -19,7 +19,7 @@ dynamic = ["version"]
 requires = ["pdm-backend"]
 build-backend = "pdm.backend"
 
-[dependency-groups]
+[project.optional-dependencies]
 tests = [
     "nose2[coverage_plugin]>=0.15.1",
     "tox-pdm>=0.7.2",
@@ -45,7 +45,7 @@ release = [
 
 # Ruff
 [tool.ruff]
-exclude = [".venv","data", "examples"]
+exclude = [".venv","data", "examples", "uv.lock", 'pdm.lock']
 line-length = 79
 
 # - https://docs.astral.sh/ruff/rules/
